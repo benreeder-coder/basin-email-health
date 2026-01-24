@@ -1,36 +1,188 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Basin Ventures Email Health Dashboard
 
-## Getting Started
+A dashboard for monitoring email account warmup health scores and campaign analytics, branded for Basin Ventures.
 
-First, run the development server:
+## Live Demo
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+**Production URL**: https://basin-email-health.vercel.app
+
+## Features
+
+- **Campaigns Tab**: View campaign analytics including leads, contacts, opens, replies, and bounce rates
+- **Email Accounts Tab**: Monitor email account health scores, warmup status, and daily limits
+- **Domains Tab**: Aggregated health metrics by domain
+- **Alerts Tab**: Critical and warning alerts for accounts needing attention
+- **Auto-refresh**: Dashboard updates every 30 seconds
+- **Webhook API**: Receive data from n8n workflows
+
+## Tech Stack
+
+- **Framework**: Next.js 16 (App Router)
+- **Language**: TypeScript
+- **Styling**: Tailwind CSS v4
+- **Components**: shadcn/ui
+- **Data Tables**: TanStack Table
+- **Icons**: Lucide React
+- **Fonts**: Montserrat (headings), Inter (body)
+
+## Brand Colors
+
+- **Primary (Basin Red)**: #E31B54
+- **Secondary (Navy)**: #141414
+- **Background**: #f2f2f2
+- **Health Scores**:
+  - Excellent (80-100): #22C55E
+  - Good (60-79): #84CC16
+  - Warning (40-59): #EAB308
+  - Poor (20-39): #F97316
+  - Critical (0-19): #EF4444
+
+## API Endpoints
+
+### Webhooks (POST)
+
+**Accounts Webhook**
+```
+POST /api/webhooks/accounts
+Content-Type: application/json
+
+{
+  "items": [
+    {
+      "email": "user@example.com",
+      "stat_warmup_score": 85,
+      "status": 1,
+      "warmup_status": 1,
+      "daily_limit": 50,
+      ...
+    }
+  ]
+}
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+**Campaigns Webhook**
+```
+POST /api/webhooks/campaigns
+Content-Type: application/json
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+{
+  "campaigns": [
+    {
+      "campaign_name": "Q4 Outreach",
+      "campaign_status": 1,
+      "leads_count": 1000,
+      "emails_sent_count": 500,
+      ...
+    }
+  ]
+}
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Dashboard Data (GET)
 
-## Learn More
+```
+GET /api/dashboard
 
-To learn more about Next.js, take a look at the following resources:
+Response:
+{
+  "accounts": [...],
+  "campaigns": [...],
+  "domains": [...],
+  "alerts": [...],
+  "lastUpdated": "2025-12-18T10:00:00.000Z"
+}
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## n8n Workflow Integration
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+The updated workflow file (`workflow-updated.json`) is configured to send data to this dashboard:
 
-## Deploy on Vercel
+1. Import `workflow-updated.json` into n8n
+2. Configure your Instantly.ai API credentials
+3. Enable the workflow
+4. Data will be sent every 6 hours automatically
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+**Webhook URLs in workflow**:
+- Accounts: `https://basin-email-health.vercel.app/api/webhooks/accounts`
+- Campaigns: `https://basin-email-health.vercel.app/api/webhooks/campaigns`
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Local Development
+
+```bash
+# Install dependencies
+npm install
+
+# Run development server
+npm run dev
+
+# Build for production
+npm run build
+
+# Start production server
+npm start
+```
+
+Open [http://localhost:3000](http://localhost:3000) to view the dashboard.
+
+## Environment Variables
+
+No environment variables are required for basic operation.
+
+Optional (for enhanced security):
+```env
+WEBHOOK_SECRET=your-secret-key  # For webhook authentication
+```
+
+## Deployment
+
+The app is deployed on Vercel. To redeploy:
+
+```bash
+npx vercel --prod
+```
+
+## Project Structure
+
+```
+basin-email-health/
+├── src/
+│   ├── app/
+│   │   ├── api/
+│   │   │   ├── dashboard/route.ts
+│   │   │   └── webhooks/
+│   │   │       ├── accounts/route.ts
+│   │   │       └── campaigns/route.ts
+│   │   ├── globals.css
+│   │   ├── layout.tsx
+│   │   └── page.tsx
+│   ├── components/
+│   │   ├── dashboard/
+│   │   │   ├── alerts-tab.tsx
+│   │   │   ├── campaigns-tab.tsx
+│   │   │   ├── data-table.tsx
+│   │   │   ├── domains-tab.tsx
+│   │   │   ├── email-accounts-tab.tsx
+│   │   │   ├── header.tsx
+│   │   │   ├── health-score-card.tsx
+│   │   │   └── stat-card.tsx
+│   │   └── ui/  (shadcn components)
+│   └── lib/
+│       ├── store.ts
+│       ├── types.ts
+│       └── utils.ts
+├── public/
+│   └── basin-logo.png
+└── package.json
+```
+
+## Data Persistence
+
+**Note**: This dashboard uses in-memory storage. Data will be cleared when the server restarts or when Vercel functions cold-start. For production use with persistent data, consider:
+
+- Adding a database (PostgreSQL, MongoDB, etc.)
+- Using Redis for caching
+- Implementing Vercel KV storage
+
+## License
+
+Private - Basin Ventures

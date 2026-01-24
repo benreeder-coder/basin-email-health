@@ -1,0 +1,76 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("POSTGRES_PRISMA_URL")
+  directUrl = env("POSTGRES_URL_NON_POOLING")
+}
+
+model EmailAccount {
+  id                      String   @id @default(cuid())
+  email                   String   @unique
+  firstName               String?
+  lastName                String?
+  organization            String?
+  warmupStatus            Int      @default(0)
+  providerCode            Int?
+  setupPending            Boolean  @default(false)
+  isManagedAccount        Boolean  @default(false)
+  warmupLimit             Int?
+  warmupCustomFtag        String?
+  warmupIncrement         String?
+  warmupReplyRate         Float?
+  addedBy                 String?
+  dailyLimit              Int?
+  modifiedBy              String?
+  trackingDomainName      String?
+  trackingDomainStatus    String?
+  status                  Int      @default(1)
+  enableSlowRamp          Boolean  @default(false)
+  inboxPlacementTestLimit Int?
+  statWarmupScore         Int      @default(0)
+  sendingGap              Int?
+  timestampCreated        DateTime?
+  timestampUpdated        DateTime?
+  timestampLastUsed       DateTime?
+  createdAt               DateTime @default(now())
+  updatedAt               DateTime @updatedAt
+
+  @@index([email])
+  @@index([statWarmupScore])
+}
+
+model Campaign {
+  id                     String   @id @default(cuid())
+  campaignId             String   @unique
+  campaignName           String
+  campaignStatus         Int      @default(0)
+  campaignIsEvergreen    Boolean  @default(false)
+  leadsCount             Int      @default(0)
+  contactedCount         Int      @default(0)
+  openCount              Int      @default(0)
+  replyCount             Int      @default(0)
+  linkClickCount         Int      @default(0)
+  bouncedCount           Int      @default(0)
+  unsubscribedCount      Int      @default(0)
+  completedCount         Int      @default(0)
+  emailsSentCount        Int      @default(0)
+  newLeadsContactedCount Int      @default(0)
+  totalOpportunities     Int      @default(0)
+  totalOpportunityValue  Float    @default(0)
+  openCountUnique        Int      @default(0)
+  replyCountUnique       Int      @default(0)
+  linkClickCountUnique   Int      @default(0)
+  createdAt              DateTime @default(now())
+  updatedAt              DateTime @updatedAt
+
+  @@index([campaignId])
+  @@index([campaignStatus])
+}
+
+model SyncMetadata {
+  id          String   @id @default("singleton")
+  lastUpdated DateTime @default(now())
+}
