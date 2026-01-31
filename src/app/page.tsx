@@ -7,7 +7,6 @@ import { CampaignsTab } from "@/components/dashboard/campaigns-tab";
 import { EmailAccountsTab } from "@/components/dashboard/email-accounts-tab";
 import { DomainsTab } from "@/components/dashboard/domains-tab";
 import { AlertsTab } from "@/components/dashboard/alerts-tab";
-import { SendProjectionTab } from "@/components/dashboard/send-projection-tab";
 import { FullDashboardData } from "@/lib/types";
 import { Loader2 } from "lucide-react";
 
@@ -90,12 +89,6 @@ export default function Dashboard() {
                   </span>
                 )}
               </TabsTrigger>
-              <TabsTrigger
-                value="send-projection"
-                className="rounded-lg data-[state=active]:bg-brand data-[state=active]:text-white data-[state=inactive]:text-gray-400 transition-all duration-200"
-              >
-                Send Projection
-              </TabsTrigger>
             </TabsList>
 
             <TabsContent value="campaigns" className="animate-fade-in">
@@ -114,9 +107,6 @@ export default function Dashboard() {
               <AlertsTab alerts={data.alerts} />
             </TabsContent>
 
-            <TabsContent value="send-projection" className="animate-fade-in">
-              <SendProjectionTab />
-            </TabsContent>
           </Tabs>
         )}
       </main>
