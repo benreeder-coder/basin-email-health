@@ -139,6 +139,19 @@ interface CampaignsTabProps {
 export function CampaignsTab({ campaigns }: CampaignsTabProps) {
   const [view, setView] = useState<"charts" | "table">("charts");
 
+  if (campaigns.length === 0) {
+    return (
+      <div className="flex flex-col items-center justify-center py-16 bg-[#1a1a1a] rounded-2xl border border-white/10">
+        <h3 className="text-xl font-semibold text-white mb-2">
+          Richard and Ahmad, there&apos;ll be data here soon.
+        </h3>
+        <p className="text-gray-400">
+          But in the meantime, thank you!!
+        </p>
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-6">
       {/* View Toggle */}
@@ -147,9 +160,9 @@ export function CampaignsTab({ campaigns }: CampaignsTabProps) {
         <div className="flex gap-2 bg-[#1a1a1a] p-1 rounded-lg border border-white/10">
           <button
             onClick={() => setView("charts")}
-            className={`px-4 py-2 rounded-md text-sm font-medium transition-all flex items-center gap-2 ${
+            className={`px-4 py-2 rounded-md text-sm font-medium transition-all flex items-center gap-2 btn-interactive ${
               view === "charts"
-                ? "bg-basin-red text-white"
+                ? "bg-brand text-white"
                 : "text-gray-400 hover:text-white hover:bg-white/5"
             }`}
           >
@@ -158,9 +171,9 @@ export function CampaignsTab({ campaigns }: CampaignsTabProps) {
           </button>
           <button
             onClick={() => setView("table")}
-            className={`px-4 py-2 rounded-md text-sm font-medium transition-all flex items-center gap-2 ${
+            className={`px-4 py-2 rounded-md text-sm font-medium transition-all flex items-center gap-2 btn-interactive ${
               view === "table"
-                ? "bg-basin-red text-white"
+                ? "bg-brand text-white"
                 : "text-gray-400 hover:text-white hover:bg-white/5"
             }`}
           >

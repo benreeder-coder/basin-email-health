@@ -55,7 +55,7 @@ export default function Dashboard() {
       <main className="max-w-7xl mx-auto px-6 py-6">
         {isLoading && data.accounts.length === 0 ? (
           <div className="flex items-center justify-center py-20">
-            <Loader2 className="h-8 w-8 animate-spin text-basin-red" />
+            <Loader2 className="h-8 w-8 animate-spin text-brand" />
             <span className="ml-3 text-muted-foreground">Loading dashboard...</span>
           </div>
         ) : (
@@ -63,25 +63,25 @@ export default function Dashboard() {
             <TabsList className="mb-6 bg-[#1a1a1a] border border-white/10 p-1 rounded-xl">
               <TabsTrigger
                 value="campaigns"
-                className="rounded-lg data-[state=active]:bg-basin-red data-[state=active]:text-white data-[state=inactive]:text-gray-400 transition-all duration-200"
+                className="rounded-lg data-[state=active]:bg-brand data-[state=active]:text-white data-[state=inactive]:text-gray-400 transition-all duration-200"
               >
                 Campaigns
               </TabsTrigger>
               <TabsTrigger
                 value="accounts"
-                className="rounded-lg data-[state=active]:bg-basin-red data-[state=active]:text-white data-[state=inactive]:text-gray-400 transition-all duration-200"
+                className="rounded-lg data-[state=active]:bg-brand data-[state=active]:text-white data-[state=inactive]:text-gray-400 transition-all duration-200"
               >
                 Email Accounts
               </TabsTrigger>
               <TabsTrigger
                 value="domains"
-                className="rounded-lg data-[state=active]:bg-basin-red data-[state=active]:text-white data-[state=inactive]:text-gray-400 transition-all duration-200"
+                className="rounded-lg data-[state=active]:bg-brand data-[state=active]:text-white data-[state=inactive]:text-gray-400 transition-all duration-200"
               >
                 Domains
               </TabsTrigger>
               <TabsTrigger
                 value="alerts"
-                className="rounded-lg data-[state=active]:bg-basin-red data-[state=active]:text-white data-[state=inactive]:text-gray-400 transition-all duration-200 relative"
+                className="rounded-lg data-[state=active]:bg-brand data-[state=active]:text-white data-[state=inactive]:text-gray-400 transition-all duration-200 relative"
               >
                 Alerts
                 {criticalAlerts > 0 && (
@@ -92,29 +92,29 @@ export default function Dashboard() {
               </TabsTrigger>
               <TabsTrigger
                 value="send-projection"
-                className="rounded-lg data-[state=active]:bg-basin-red data-[state=active]:text-white data-[state=inactive]:text-gray-400 transition-all duration-200"
+                className="rounded-lg data-[state=active]:bg-brand data-[state=active]:text-white data-[state=inactive]:text-gray-400 transition-all duration-200"
               >
                 Send Projection
               </TabsTrigger>
             </TabsList>
 
-            <TabsContent value="campaigns">
+            <TabsContent value="campaigns" className="animate-fade-in">
               <CampaignsTab campaigns={data.campaigns} />
             </TabsContent>
 
-            <TabsContent value="accounts">
+            <TabsContent value="accounts" className="animate-fade-in">
               <EmailAccountsTab accounts={data.accounts} />
             </TabsContent>
 
-            <TabsContent value="domains">
+            <TabsContent value="domains" className="animate-fade-in">
               <DomainsTab domains={data.domains} />
             </TabsContent>
 
-            <TabsContent value="alerts">
+            <TabsContent value="alerts" className="animate-fade-in">
               <AlertsTab alerts={data.alerts} />
             </TabsContent>
 
-            <TabsContent value="send-projection">
+            <TabsContent value="send-projection" className="animate-fade-in">
               <SendProjectionTab />
             </TabsContent>
           </Tabs>
