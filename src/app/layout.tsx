@@ -16,8 +16,8 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Basin Ventures Email Health Dashboard",
-  description: "Monitor email account warmup health scores and campaign analytics",
+  title: "Basin Email Health Dashboard",
+  description: "Monitor email account warmup health scores and campaign analytics for Basin Ventures",
   icons: {
     icon: "/favicon.ico",
   },
