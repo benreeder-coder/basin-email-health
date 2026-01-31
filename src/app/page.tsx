@@ -7,6 +7,7 @@ import { CampaignsTab } from "@/components/dashboard/campaigns-tab";
 import { EmailAccountsTab } from "@/components/dashboard/email-accounts-tab";
 import { DomainsTab } from "@/components/dashboard/domains-tab";
 import { AlertsTab } from "@/components/dashboard/alerts-tab";
+import { SendProjectionTab } from "@/components/dashboard/send-projection-tab";
 import { FullDashboardData } from "@/lib/types";
 import { Loader2 } from "lucide-react";
 
@@ -54,7 +55,7 @@ export default function Dashboard() {
       <main className="max-w-7xl mx-auto px-6 py-6">
         {isLoading && data.accounts.length === 0 ? (
           <div className="flex items-center justify-center py-20">
-            <Loader2 className="h-8 w-8 animate-spin text-brand" />
+            <Loader2 className="h-8 w-8 animate-spin text-basin-red" />
             <span className="ml-3 text-muted-foreground">Loading dashboard...</span>
           </div>
         ) : (
@@ -62,25 +63,25 @@ export default function Dashboard() {
             <TabsList className="mb-6 bg-[#1a1a1a] border border-white/10 p-1 rounded-xl">
               <TabsTrigger
                 value="campaigns"
-                className="rounded-lg data-[state=active]:bg-brand data-[state=active]:text-white data-[state=inactive]:text-gray-400 transition-all duration-200"
+                className="rounded-lg data-[state=active]:bg-basin-red data-[state=active]:text-white data-[state=inactive]:text-gray-400 transition-all duration-200"
               >
                 Campaigns
               </TabsTrigger>
               <TabsTrigger
                 value="accounts"
-                className="rounded-lg data-[state=active]:bg-brand data-[state=active]:text-white data-[state=inactive]:text-gray-400 transition-all duration-200"
+                className="rounded-lg data-[state=active]:bg-basin-red data-[state=active]:text-white data-[state=inactive]:text-gray-400 transition-all duration-200"
               >
                 Email Accounts
               </TabsTrigger>
               <TabsTrigger
                 value="domains"
-                className="rounded-lg data-[state=active]:bg-brand data-[state=active]:text-white data-[state=inactive]:text-gray-400 transition-all duration-200"
+                className="rounded-lg data-[state=active]:bg-basin-red data-[state=active]:text-white data-[state=inactive]:text-gray-400 transition-all duration-200"
               >
                 Domains
               </TabsTrigger>
               <TabsTrigger
                 value="alerts"
-                className="rounded-lg data-[state=active]:bg-brand data-[state=active]:text-white data-[state=inactive]:text-gray-400 transition-all duration-200 relative"
+                className="rounded-lg data-[state=active]:bg-basin-red data-[state=active]:text-white data-[state=inactive]:text-gray-400 transition-all duration-200 relative"
               >
                 Alerts
                 {criticalAlerts > 0 && (
@@ -89,24 +90,33 @@ export default function Dashboard() {
                   </span>
                 )}
               </TabsTrigger>
+              <TabsTrigger
+                value="send-projection"
+                className="rounded-lg data-[state=active]:bg-basin-red data-[state=active]:text-white data-[state=inactive]:text-gray-400 transition-all duration-200"
+              >
+                Send Projection
+              </TabsTrigger>
             </TabsList>
 
-            <TabsContent value="campaigns" className="animate-fade-in">
+            <TabsContent value="campaigns">
               <CampaignsTab campaigns={data.campaigns} />
             </TabsContent>
 
-            <TabsContent value="accounts" className="animate-fade-in">
+            <TabsContent value="accounts">
               <EmailAccountsTab accounts={data.accounts} />
             </TabsContent>
 
-            <TabsContent value="domains" className="animate-fade-in">
+            <TabsContent value="domains">
               <DomainsTab domains={data.domains} />
             </TabsContent>
 
-            <TabsContent value="alerts" className="animate-fade-in">
+            <TabsContent value="alerts">
               <AlertsTab alerts={data.alerts} />
             </TabsContent>
 
+            <TabsContent value="send-projection">
+              <SendProjectionTab />
+            </TabsContent>
           </Tabs>
         )}
       </main>

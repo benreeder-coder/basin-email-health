@@ -104,19 +104,6 @@ interface EmailAccountsTabProps {
 }
 
 export function EmailAccountsTab({ accounts }: EmailAccountsTabProps) {
-  if (accounts.length === 0) {
-    return (
-      <div className="flex flex-col items-center justify-center py-16 bg-[#1a1a1a] rounded-2xl border border-white/10">
-        <h3 className="text-xl font-semibold text-white mb-2">
-          Richard and Ahmad, there&apos;ll be data here soon.
-        </h3>
-        <p className="text-gray-400">
-          But in the meantime, thank you!!
-        </p>
-      </div>
-    );
-  }
-
   const avgHealth =
     accounts.length > 0
       ? Math.round(

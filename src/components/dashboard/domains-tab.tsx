@@ -71,7 +71,7 @@ function AccountCard({ account, index }: { account: EmailAccount; index: number 
             <p className="text-xs text-gray-500">Warmup</p>
             <Badge
               variant="outline"
-              className={`text-xs ${account.warmup_status === 1 ? 'border-brand text-brand' : 'border-gray-600 text-gray-400'}`}
+              className={`text-xs ${account.warmup_status === 1 ? 'border-basin-red text-basin-red' : 'border-gray-600 text-gray-400'}`}
             >
               {account.warmup_status === 1 ? "On" : "Off"}
             </Badge>
@@ -103,7 +103,7 @@ function DomainCard({ domain }: { domain: DomainHealth }) {
           {/* Domain Info */}
           <div className="text-left">
             <div className="flex items-center gap-2">
-              <Globe className="w-4 h-4 text-brand" />
+              <Globe className="w-4 h-4 text-basin-red" />
               <h3 className="text-white font-semibold text-lg">{domain.domain}</h3>
             </div>
             <p className="text-gray-500 text-sm mt-1">
@@ -119,7 +119,7 @@ function DomainCard({ domain }: { domain: DomainHealth }) {
             <span className="text-gray-300 text-sm">{domain.activeAccounts} active</span>
           </div>
           <div className="flex items-center gap-2 bg-white/5 px-3 py-2 rounded-lg">
-            <Zap className="w-4 h-4 text-brand" />
+            <Zap className="w-4 h-4 text-basin-red" />
             <span className="text-gray-300 text-sm">{domain.warmupEnabled} warming</span>
           </div>
           <ChevronDown
@@ -181,8 +181,8 @@ export function DomainsTab({ domains }: DomainsTabProps) {
       <div className="grid grid-cols-4 gap-4">
         <div className="bg-[#1a1a1a] rounded-xl p-5 border border-white/10">
           <div className="flex items-center gap-3 mb-2">
-            <div className="w-10 h-10 rounded-lg bg-brand/20 flex items-center justify-center">
-              <Globe className="w-5 h-5 text-brand" />
+            <div className="w-10 h-10 rounded-lg bg-basin-red/20 flex items-center justify-center">
+              <Globe className="w-5 h-5 text-basin-red" />
             </div>
             <span className="text-gray-500 text-sm">Total Domains</span>
           </div>
@@ -231,12 +231,11 @@ export function DomainsTab({ domains }: DomainsTabProps) {
 
       {/* Empty State */}
       {domains.length === 0 && (
-        <div className="flex flex-col items-center justify-center py-16 bg-[#1a1a1a] rounded-2xl border border-white/10">
-          <h3 className="text-xl font-semibold text-white mb-2">
-            Richard and Ahmad, there&apos;ll be data here soon.
-          </h3>
-          <p className="text-gray-400">
-            But in the meantime, thank you!!
+        <div className="text-center py-12 bg-[#1a1a1a] rounded-2xl border border-white/10">
+          <Globe className="w-12 h-12 text-gray-600 mx-auto mb-4" />
+          <h3 className="text-gray-400 font-medium mb-2">No domains yet</h3>
+          <p className="text-gray-600 text-sm">
+            Domain data will appear here once email accounts are synced
           </p>
         </div>
       )}
