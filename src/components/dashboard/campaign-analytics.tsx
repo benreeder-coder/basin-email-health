@@ -49,6 +49,26 @@ const STATUS_MAP: Record<number, { label: string; color: string }> = {
   3: { label: "Completed", color: "#3B82F6" },
 };
 
+// Smart truncation that preserves unique suffixes like "(All)", "(Mike)"
+function truncateCampaignName(name: string, maxLength: number = 20): string {
+  if (name.length <= maxLength) return name;
+
+  // Check for parenthetical suffix like "(All)", "(Mike)"
+  const suffixMatch = name.match(/\s*\([^)]+\)\s*$/);
+  if (suffixMatch) {
+    const suffix = suffixMatch[0].trim();
+    const prefix = name.slice(0, name.length - suffixMatch[0].length);
+    const availableForPrefix = maxLength - suffix.length - 3; // 3 for "..."
+
+    if (availableForPrefix > 5) {
+      return prefix.substring(0, availableForPrefix).trim() + "..." + suffix;
+    }
+  }
+
+  // Fallback: standard truncation
+  return name.substring(0, maxLength - 3) + "...";
+}
+
 function CustomTooltip({ active, payload, label }: any) {
   if (!active || !payload?.length) return null;
 
@@ -99,7 +119,7 @@ export function CampaignAnalyticsDashboard({ campaigns }: CampaignAnalyticsProps
   // Prepare chart data
   const barChartData = useMemo(() => {
     return filteredCampaigns.map((c) => ({
-      name: c.campaign_name.length > 15 ? c.campaign_name.substring(0, 15) + "..." : c.campaign_name,
+      name: truncateCampaignName(c.campaign_name, 22),
       fullName: c.campaign_name,
       sent: c.emails_sent_count,
       leads: c.leads_count,
