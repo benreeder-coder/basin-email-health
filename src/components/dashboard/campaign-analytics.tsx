@@ -140,11 +140,15 @@ export function CampaignAnalyticsDashboard({ campaigns }: CampaignAnalyticsProps
     });
     return Object.entries(counts)
       .filter(([, count]) => count > 0)
-      .map(([status, count]) => ({
-        name: STATUS_MAP[Number(status)].label,
-        value: count,
-        color: STATUS_MAP[Number(status)].color,
-      }));
+      .map(([status, count]) => {
+        const statusNum = Number(status);
+        const config = STATUS_MAP[statusNum] || { label: "Unknown", color: "#6B7280" };
+        return {
+          name: config.label,
+          value: count,
+          color: config.color,
+        };
+      });
   }, [campaigns]);
 
   // Funnel data
