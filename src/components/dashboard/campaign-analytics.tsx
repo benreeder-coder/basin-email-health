@@ -100,18 +100,20 @@ export function CampaignAnalyticsDashboard({ campaigns }: CampaignAnalyticsProps
     const total = filteredCampaigns.reduce(
       (acc, c) => ({
         sent: acc.sent + c.emails_sent_count,
+        contacted: acc.contacted + c.contacted_count,
         leads: acc.leads + c.leads_count,
         replies: acc.replies + c.reply_count_unique,
         bounced: acc.bounced + c.bounced_count,
         opps: acc.opps + c.total_opportunities,
         value: acc.value + c.total_opportunity_value,
       }),
-      { sent: 0, leads: 0, replies: 0, bounced: 0, opps: 0, value: 0 }
+      { sent: 0, contacted: 0, leads: 0, replies: 0, bounced: 0, opps: 0, value: 0 }
     );
 
     return {
       ...total,
-      replyRate: total.sent > 0 ? ((total.replies / total.sent) * 100).toFixed(1) : "0",
+      replyRate: total.contacted > 0 ? ((total.replies / total.contacted) * 100).toFixed(1) : "0",
+      positiveRate: total.replies > 0 ? ((total.opps / total.replies) * 100).toFixed(1) : "0",
       bounceRate: total.sent > 0 ? ((total.bounced / total.sent) * 100).toFixed(1) : "0",
     };
   }, [filteredCampaigns]);
@@ -125,7 +127,8 @@ export function CampaignAnalyticsDashboard({ campaigns }: CampaignAnalyticsProps
       leads: c.leads_count,
       replies: c.reply_count_unique,
       bounced: c.bounced_count,
-      replyRate: c.emails_sent_count > 0 ? parseFloat(((c.reply_count_unique / c.emails_sent_count) * 100).toFixed(1)) : 0,
+      replyRate: c.contacted_count > 0 ? parseFloat(((c.reply_count_unique / c.contacted_count) * 100).toFixed(1)) : 0,
+      positiveRate: c.reply_count_unique > 0 ? parseFloat(((c.total_opportunities / c.reply_count_unique) * 100).toFixed(1)) : 0,
       bounceRate: c.emails_sent_count > 0 ? parseFloat(((c.bounced_count / c.emails_sent_count) * 100).toFixed(1)) : 0,
       opps: c.total_opportunities,
       value: c.total_opportunity_value,
@@ -237,7 +240,7 @@ export function CampaignAnalyticsDashboard({ campaigns }: CampaignAnalyticsProps
       </div>
 
       {/* Summary Metrics */}
-      <div className="grid grid-cols-6 gap-4">
+      <div className="grid grid-cols-7 gap-4">
         <div className="bg-[#1a1a1a] rounded-xl p-4 border border-white/10">
           <div className="flex items-center gap-2 mb-2">
             <Mail className="w-4 h-4 text-basin-red" />
@@ -265,6 +268,13 @@ export function CampaignAnalyticsDashboard({ campaigns }: CampaignAnalyticsProps
             <span className="text-xs text-gray-500">Reply Rate</span>
           </div>
           <p className="text-2xl font-bold text-health-good">{metrics.replyRate}%</p>
+        </div>
+        <div className="bg-[#1a1a1a] rounded-xl p-4 border border-white/10">
+          <div className="flex items-center gap-2 mb-2">
+            <TrendingUp className="w-4 h-4 text-cyan-400" />
+            <span className="text-xs text-gray-500">Positive Rate</span>
+          </div>
+          <p className="text-2xl font-bold text-cyan-400">{metrics.positiveRate}%</p>
         </div>
         <div className="bg-[#1a1a1a] rounded-xl p-4 border border-white/10">
           <div className="flex items-center gap-2 mb-2">
@@ -315,6 +325,7 @@ export function CampaignAnalyticsDashboard({ campaigns }: CampaignAnalyticsProps
                   <Tooltip content={<CustomTooltip />} />
                   <Legend wrapperStyle={{ paddingTop: 20 }} />
                   <Bar dataKey="replyRate" name="Reply Rate" fill={COLORS.success} radius={[4, 4, 0, 0]} />
+                  <Bar dataKey="positiveRate" name="Positive Rate" fill={COLORS.cyan} radius={[4, 4, 0, 0]} />
                   <Bar dataKey="bounceRate" name="Bounce Rate" fill={COLORS.danger} radius={[4, 4, 0, 0]} />
                 </BarChart>
               ) : (

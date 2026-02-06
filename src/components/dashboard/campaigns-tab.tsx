@@ -54,6 +54,15 @@ const campaignColumns: ColumnDef<CampaignAnalytics>[] = [
     ),
   },
   {
+    accessorKey: "contacted_count",
+    header: "Contacted",
+    cell: ({ row }) => (
+      <span className="text-gray-300">
+        {(row.getValue("contacted_count") as number).toLocaleString()}
+      </span>
+    ),
+  },
+  {
     accessorKey: "leads_count",
     header: "Leads",
     cell: ({ row }) => (
@@ -76,8 +85,8 @@ const campaignColumns: ColumnDef<CampaignAnalytics>[] = [
     header: "Reply %",
     cell: ({ row }) => {
       const replies = row.original.reply_count_unique;
-      const sent = row.original.emails_sent_count;
-      const rate = sent > 0 ? ((replies / sent) * 100).toFixed(1) : "0";
+      const contacted = row.original.contacted_count;
+      const rate = contacted > 0 ? ((replies / contacted) * 100).toFixed(1) : "0";
       const rateNum = parseFloat(rate);
       const colorClass = rateNum >= 5 ? "text-health-excellent" : rateNum >= 2 ? "text-health-good" : "text-gray-400";
       return <span className={`font-medium ${colorClass}`}>{rate}%</span>;
@@ -87,12 +96,11 @@ const campaignColumns: ColumnDef<CampaignAnalytics>[] = [
     id: "positive_rate",
     header: "Positive %",
     cell: ({ row }) => {
-      // Positive rate based on replies vs opens (engaged users who replied)
+      const opps = row.original.total_opportunities;
       const replies = row.original.reply_count_unique;
-      const opens = row.original.open_count_unique;
-      const rate = opens > 0 ? ((replies / opens) * 100).toFixed(1) : "0";
+      const rate = replies > 0 ? ((opps / replies) * 100).toFixed(1) : "0";
       const rateNum = parseFloat(rate);
-      const colorClass = rateNum >= 20 ? "text-health-excellent" : rateNum >= 10 ? "text-health-good" : "text-cyan-400";
+      const colorClass = rateNum >= 50 ? "text-health-excellent" : rateNum >= 25 ? "text-health-good" : "text-cyan-400";
       return <span className={`font-medium ${colorClass}`}>{rate}%</span>;
     },
   },
